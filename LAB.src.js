@@ -3,7 +3,9 @@
     MIT License
 */
 
+// 由于是在浏览器中以script引入，this实际上就是window对象，所以传入的global参数，就是window
 (function(global){
+	// 刚开始$LAB变量还未定义，可以在浏览器中对这段代码进行调试
 	var _$LAB = global.$LAB,
 	
 		// constants for the valid keys of the options object
@@ -47,6 +49,7 @@
 	}
 /*!END_DEBUG*/
 
+	// 在一个函数内部定义了非常多的函数
 	// test for function
 	function is_func(func) { return Object.prototype.toString.call(func) == "[object Function]"; }
 
