@@ -6,6 +6,7 @@
 // 由于是在浏览器中以script引入，this实际上就是window对象，所以传入的global参数，就是window
 (function(global){
 	// 刚开始$LAB变量还未定义，可以在浏览器中对这段代码进行调试
+	// 变量可以定义在很多行,这个是所谓的one var模式
 	var _$LAB = global.$LAB,
 	
 		// constants for the valid keys of the options object
@@ -50,6 +51,7 @@
 /*!END_DEBUG*/
 
 	// 在一个函数内部定义了非常多的函数
+	// 直接tostring返回的字符串，带有函数参数列表。
 	// test for function
 	function is_func(func) { return Object.prototype.toString.call(func) == "[object Function]"; }
 
