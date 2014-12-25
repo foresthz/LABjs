@@ -39,6 +39,7 @@
 		
 		// XHR preloading (same-domain) and cache-preloading (remote-domain) are the fallbacks (for some browsers)
 		xhr_or_cache_preloading = !real_preloading && !script_ordered_async && !opera_or_gecko
+    // 分号也成一行了
 	;
 
 /*!START_DEBUG*/
@@ -203,6 +204,7 @@
 			can_use_preloading = real_preloading || xhr_or_cache_preloading,
 			queue = [],
 			registry = {},
+            // 在上层定义了变量
 			instanceAPI
 		;
 		
@@ -371,6 +373,7 @@
 			}
 
 			// API for $LAB chains
+            // 结构很复杂,为何放在chainedAPI对象中呢?最后返回的对象也是对这个对象的封装
 			chainedAPI = {
 				// start loading one or more scripts
 				script:function(){
@@ -433,7 +436,7 @@
 			// the first chain link API (includes `setOptions` only this first time)
 			return {
 				script:chainedAPI.script, 
-				wait:chainedAPI.wait, 
+				wait:chainedAPI.wait,
 				setOptions:function(opts){
 					merge_objs(opts,chain_opts);
 					return chainedAPI;
@@ -442,6 +445,7 @@
 		}
 
 		// API for each initial $LAB instance (before chaining starts)
+        // API接口全都放在一个对象中,这个叫什么设计模式?最后返回的也是一个对象
 		instanceAPI = {
 			// main API functions
 			setGlobalDefaults:function(opts){
@@ -451,6 +455,7 @@
 			setOptions:function(){
 				return create_chain().setOptions.apply(null,arguments);
 			},
+            // script函数
 			script:function(){
 				return create_chain().script.apply(null,arguments);
 			},
