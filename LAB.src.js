@@ -199,12 +199,14 @@
 	}
 		
 	// create a clean instance of $LAB
+	// 在一个函数里定义了很多函数,这种设计的目的是什么? JS的作用于是function,所以内部的函数,在外部是无法调用的? 可以做实验验证
 	function create_sandbox() {
+
 		var global_defaults = {},
 			can_use_preloading = real_preloading || xhr_or_cache_preloading,
 			queue = [],
 			registry = {},
-            // 在上层定义了变量
+      // 在上层定义了变量
 			instanceAPI
 		;
 		
@@ -434,6 +436,7 @@
 			};
 
 			// the first chain link API (includes `setOptions` only this first time)
+			// 返回的是一个融合了setOptions的对象,setOptions实际上是一个函数
 			return {
 				script:chainedAPI.script, 
 				wait:chainedAPI.wait,
@@ -445,7 +448,9 @@
 		}
 
 		// API for each initial $LAB instance (before chaining starts)
-        // API接口全都放在一个对象中,这个叫什么设计模式?最后返回的也是一个对象
+    // API接口全都放在一个对象中,这个叫什么设计模式?最后返回的也是一个对象
+    // 是否调用了上面定义的函数呢? 
+    // 这个类,可以在bower中调用.
 		instanceAPI = {
 			// main API functions
 			setGlobalDefaults:function(opts){
@@ -453,6 +458,7 @@
 				return instanceAPI;
 			},
 			setOptions:function(){
+				// 调用了creat_chain里面的对象. 
 				return create_chain().setOptions.apply(null,arguments);
 			},
             // script函数
@@ -495,10 +501,13 @@
 			}
 		};
 
+		// 返回的居然是一堆借口. 对于源码的阅读,可以写成一篇 源码分析报告, 也算是对学习的总结. 
 		return instanceAPI;
 	}
 
 	// create the main instance of $LAB
+	// 这个函数是有返回值的, 里面是否定义了toString方法呢?
+	// 不是直接复制instanceAPI,而是通过函数返回,这样的设计又更加具有灵活性
 	global.$LAB = create_sandbox();
 
 
@@ -511,6 +520,9 @@
 	   For instance, jQuery 1.4+ has been patched to take advantage of document.readyState, which is enabled by this hack. But 1.3.2 and before are **not** safe or 
 	   fixed by this hack, and should therefore **not** be lazy-loaded by script loader tools such as LABjs.
 	*/ 
+	// 在整体闭包中,放置更多的闭包是出于何种考虑呢? readyState是什么东西?
+	// 可否弄个协同的代码阅读交流环境,大家可以做细致的讨论. 或者这些代码片段马上可以引用过来使用. 
+	// 这也是快速地编程技巧学习
 	(function(addEvent,domLoaded,handler){
 		if (document.readyState == null && document[addEvent]){
 			document.readyState = "loading";
