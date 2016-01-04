@@ -8,7 +8,6 @@
 	// 刚开始$LAB变量还未定义，可以在浏览器中对这段代码进行调试
 	// 变量可以定义在很多行,这个是所谓的one var模式
 	var _$LAB = global.$LAB,
-	
 		// constants for the valid keys of the options object
 		_UseLocalXHR = "UseLocalXHR",
 		_AlwaysPreserveOrder = "AlwaysPreserveOrder",
@@ -375,11 +374,13 @@
 			}
 
 			// API for $LAB chains
-            // 结构很复杂,为何放在chainedAPI对象中呢?最后返回的对象也是对这个对象的封装
+      // 结构很复杂,为何放在chainedAPI对象中呢?最后返回的对象也是对这个对象的封装
+      // 返回的都是chainedAPI,可以链式调用
 			chainedAPI = {
 				// start loading one or more scripts
 				script:function(){
 					for (var i=0; i<arguments.length; i++) {
+						// 为何在下面使用闭包呢?
 						(function(script_obj,script_list){
 							var splice_args;
 							
@@ -396,6 +397,7 @@
 									// set up an array of arguments to pass to splice()
 									splice_args = [].slice.call(script_obj); // first include the actual array elements we want to splice in
 									splice_args.unshift(j,1); // next, put the `index` and `howMany` parameters onto the beginning of the splice-arguments array
+									// 与Array.prototype.slice一致,不过这种写法更为简洁.
 									[].splice.apply(script_list,splice_args); // use the splice-arguments array as arguments for splice()
 									j--; // adjust `j` to account for the loop's subsequent `j++`, so that the next loop iteration uses the same `j` index value
 									continue;
@@ -508,6 +510,7 @@
 	// create the main instance of $LAB
 	// 这个函数是有返回值的, 里面是否定义了toString方法呢?
 	// 不是直接复制instanceAPI,而是通过函数返回,这样的设计又更加具有灵活性
+	// 全局不是交给一个变量,而是交给一个函数. # 这种设计挺巧妙的
 	global.$LAB = create_sandbox();
 
 
